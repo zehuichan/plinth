@@ -1,0 +1,15 @@
+/* Full-bleed docs: drop the default theme's centered max-width.
+   Scoped under #app so these win regardless of stylesheet order. */
+:root {
+  --vp-layout-max-width: 100%;
+}
+
+#app .VPDoc .container,
+#app .VPDoc .content,
+#app .VPDoc .content-container {
+  max-width: 100%;
+}
+
+#app .VPDoc:not(.has-sidebar) .container {
+  justify-content: flex-start;
+}

@@ -1,0 +1,53 @@
+{
+  "name": "@plinth/ui",
+  "version": "0.0.0",
+  "description": "Vue 3 component library",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "es"
+  ],
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./resolver": {
+      "types": "./dist/resolver.d.mts",
+      "import": "./dist/resolver.mjs"
+    },
+    "./style.css": "./dist/style.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./global": {
+      "types": "./dist/global.d.ts"
+    },
+    "./es/*": {
+      "types": "./es/*/index.d.mts",
+      "import": "./es/*/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsx ../../internal/build/src/cli.ts"
+  },
+  "peerDependencies": {
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@internal/build": "workspace:*",
+    "@internal/components": "workspace:*",
+    "@internal/hooks": "workspace:*",
+    "@internal/utils": "workspace:*",
+    "vue": "catalog:"
+  }
+}

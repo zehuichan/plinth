@@ -1,0 +1,18 @@
+* text=auto eol=lf
+
+*.cmd text eol=crlf
+*.[cC][mM][dD] text eol=crlf
+*.bat text eol=crlf
+*.[bB][aA][tT] text eol=crlf
+
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+
+pnpm-lock.yaml -diff linguist-generated=true

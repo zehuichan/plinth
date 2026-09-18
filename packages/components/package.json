@@ -1,0 +1,16 @@
+{
+  "name": "@internal/components",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./*": "./*/index.ts"
+  },
+  "dependencies": {
+    "@internal/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": "catalog:"
+  }
+}

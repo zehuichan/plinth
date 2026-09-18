@@ -1,0 +1,20 @@
+# Git hooks config, reference: https://lefthook.dev/configuration/
+
+pre-commit:
+  stage_fixed: true
+  commands:
+    format:
+      run: pnpm prettier --cache --ignore-unknown --write {staged_files}
+    lint-code:
+      run: pnpm eslint --cache --cache-location .cache/eslint/ --fix {staged_files}
+      glob: '*.{js,jsx,ts,tsx,vue}'
+
+post-merge:
+  commands:
+    install:
+      run: pnpm install
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}

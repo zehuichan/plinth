@@ -1,0 +1,15 @@
+{
+  "extends": "./internal/tsconfig/node.json",
+  "compilerOptions": {
+    "paths": {
+      "@internal/build": ["./internal/build/src/index.ts"]
+    }
+  },
+  "include": [
+    "internal/build/src/**/*.ts",
+    "docs/build/**/*.ts",
+    "playground/vite.config.ts",
+    "lib.config.ts"
+  ],
+  "exclude": ["**/node_modules/**"]
+}

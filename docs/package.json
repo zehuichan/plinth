@@ -1,0 +1,19 @@
+{
+  "name": "@plinth/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "check:coverage": "tsx build/check-docs-coverage.ts"
+  },
+  "devDependencies": {
+    "@internal/build": "workspace:*",
+    "@plinth/ui": "workspace:*",
+    "vitepress": "catalog:",
+    "vitepress-demo-plugin": "catalog:",
+    "vitepress-plugin-llms": "catalog:",
+    "vue": "catalog:"
+  }
+}

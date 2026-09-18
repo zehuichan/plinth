@@ -1,0 +1,9 @@
+stages:
+  - verify
+
+verify:
+  image: node:22
+  script:
+    - corepack enable
+    - pnpm install --frozen-lockfile
+    - pnpm verify

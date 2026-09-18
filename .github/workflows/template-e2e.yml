@@ -1,0 +1,121 @@
+name: template-e2e
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  template-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify
+
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: '@acme/ui'
+            prefix: Ac
+            ui: none
+            preprocessor: none
+          - name: '@acme/ui'
+            prefix: Ac
+            ui: antdv
+            preprocessor: none
+          - name: '@acme/ui'
+            prefix: Ac
+            ui: antdv-next
+            preprocessor: none
+          - name: '@acme/ui'
+            prefix: Ac
+            ui: element-plus
+            preprocessor: none
+          - name: '@acme/ui'
+            prefix: Ac
+            ui: tdesign
+            preprocessor: none
+          - name: acme-ui
+            prefix: Ac
+            ui: none
+            preprocessor: none
+          - name: '@acme/ui'
+            prefix: Ac
+            ui: none
+            preprocessor: scss
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: bootstrap copy and verify
+        env:
+          NAME: ${{ matrix.name }}
+          PREFIX: ${{ matrix.prefix }}
+          UI: ${{ matrix.ui }}
+          PREPROCESSOR: ${{ matrix.preprocessor }}
+        run: |
+          TMP=$(mktemp -d)
+          rsync -a --exclude node_modules --exclude .git --exclude dist --exclude es . "$TMP/"
+          cd "$TMP"
+          git init -q
+          pnpm install
+          pnpm bootstrap --yes --name "$NAME" --prefix "$PREFIX" --registry https://registry.npmjs.org/ --ui "$UI" --preprocessor "$PREPROCESSOR"
+          pnpm install
+          pnpm gen component foo --style
+          pnpm verify
+          test -f packages/core/es/foo/index.mjs
+          test -f packages/core/dist/tokens.css
+          grep -q -- '--ac-color-primary' packages/core/dist/tokens.css
+          if [[ "$PREPROCESSOR" == scss ]]; then
+            grep -q '<style lang="scss">' packages/components/foo/foo.vue
+            grep -q '<style lang="scss">' packages/components/button/button.vue
+            grep -q sass-embedded package.json
+          elif [[ "$PREPROCESSOR" == less ]]; then
+            grep -q '<style lang="less">' packages/components/foo/foo.vue
+            grep -q less package.json
+          else
+            grep -q '<style>' packages/components/foo/foo.vue
+            ! grep -q 'lang="scss"' packages/components/foo/foo.vue
+          fi
+          if [[ "$UI" == antdv ]]; then
+            grep -q ant-design-vue packages/core/package.json
+            grep -q "from 'ant-design-vue'" docs/.vitepress/theme/ui.ts
+          elif [[ "$UI" == antdv-next ]]; then
+            grep -q '"antdv-next"' packages/core/package.json
+            grep -q "from 'antdv-next'" docs/.vitepress/theme/ui.ts
+          elif [[ "$UI" == element-plus ]]; then
+            grep -q element-plus packages/core/package.json
+            grep -q "from 'element-plus'" docs/.vitepress/theme/ui.ts
+          elif [[ "$UI" == tdesign ]]; then
+            grep -q tdesign-vue-next packages/core/package.json
+            grep -q "from 'tdesign-vue-next'" docs/.vitepress/theme/ui.ts
+          fi
+          if grep -R --exclude-dir=node_modules --exclude-dir=.git -n '@plinth/ui\|PlinthResolver\|PlButton\|\bpl-[a-z]' .; then
+            echo 'sentinel leftover'
+            exit 1
+          fi
+          grep -q "CSS_PREFIX = 'ac'" packages/utils/src/css-prefix.ts
+          grep -q 'ac-button__content' packages/core/es/button/index.css
+          if grep -n 'template:foundation\|template:library' README.md; then
+            echo 'README template block not stripped'
+            exit 1
+          fi
+          grep -q "registry: https" AGENTS.md
+          if [[ "$NAME" == @* ]]; then
+            grep -q ':registry=' .npmrc
+          else
+            grep -q '^registry=' .npmrc
+          fi

@@ -1,0 +1,14 @@
+{
+  "extends": "../../internal/tsconfig/web.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  },
+  "include": [
+    "./**/*.ts",
+    "../../packages/components/**/*.ts",
+    "../../packages/components/**/*.vue",
+    "../../typings/**/*.d.ts"
+  ]
+}

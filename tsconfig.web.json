@@ -1,0 +1,22 @@
+{
+  "extends": "./internal/tsconfig/web.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@plinth/ui": ["./packages/core/index.ts"],
+      "@plinth/ui/resolver": ["./packages/core/resolver.ts"],
+      "@internal/build": ["./internal/build/src/index.ts"],
+      "@internal/components": ["./packages/components/index.ts"],
+      "@internal/hooks": ["./packages/hooks/src/index.ts"],
+      "@internal/utils": ["./packages/utils/src/index.ts"]
+    }
+  },
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.vue",
+    "typings/**/*.d.ts",
+    "playground/src/**/*.ts",
+    "playground/src/**/*.vue"
+  ],
+  "exclude": ["**/dist/**", "**/es/**", "**/node_modules/**"]
+}
