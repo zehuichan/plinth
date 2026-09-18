@@ -1,9 +1,10 @@
 name: template-e2e
 
+# Smoke-test bootstrap (copy → rename → verify). Not part of the foundation's
+# daily CI — `ci.yml` already runs `pnpm verify`. Run this by hand when changing
+# `scripts/bootstrap/` or the template surface that bootstrap rewrites.
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   template-verify:
