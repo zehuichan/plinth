@@ -14,8 +14,9 @@ export function buildReplacements(opts) {
   ];
 }
 
-// Matches the css sentinel wherever it starts a word: `--pl-color-x`, `.pl-button`, `pl-button__icon`.
-export const CSS_SENTINEL_RE = /\bpl-(?=[a-z])/g;
+// Matches the css sentinel wherever it starts a word: `--pl-color-x`, `.pl-button`,
+// `pl-button__icon`, and docs globs like `--pl-*`.
+export const CSS_SENTINEL_RE = /\bpl-(?=[a-z*])/g;
 
 function walk(dir, files = []) {
   for (const name of readdirSync(dir)) {

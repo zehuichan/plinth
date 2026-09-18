@@ -57,6 +57,15 @@ describe('bootstrap', () => {
     expect(text).not.toContain('pl-button');
   });
 
+  it('renames css variable globs used in docs', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'plinth-'));
+    const file = join(dir, 'guide.md');
+    writeFileSync(file, 'tokens use `--pl-*`; classes use `pl-*`.\n');
+    renameTokens(dir, { name: '@acme/ui', installer: 'Acme', cssPrefix: 'ac', prefix: 'Ac' });
+    const text = readFileSync(file, 'utf8');
+    expect(text).toBe('tokens use `--ac-*`; classes use `ac-*`.\n');
+  });
+
   it('writes the css prefix module exactly like contract:sync', async () => {
     const { renderCssPrefix } = await import('../../internal/build/src/contract/sync.ts');
     const dir = mkdtempSync(join(tmpdir(), 'plinth-'));
