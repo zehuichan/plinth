@@ -7,7 +7,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@tsdown/css": "^0.23.0",
+    "@tsdown/css": "^0.23.1",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue": "catalog:"
