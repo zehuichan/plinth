@@ -20,6 +20,11 @@ describe('componentSfc', () => {
     expect(text).toContain('<style lang="less">');
   });
 
+  it('declares slots with JSDoc for IDE metadata', () => {
+    const text = componentSfc({ ...base, preprocessor: 'none' });
+    expect(text).toMatch(/defineSlots<\{\s*\/\*\* .+ \*\/\s*default\?: \(\) => unknown;/);
+  });
+
   it('omits style when withStyle is false', () => {
     const text = componentSfc({ ...base, withStyle: false, preprocessor: 'scss' });
     expect(text).not.toContain('<style');

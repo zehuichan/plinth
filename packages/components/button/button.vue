@@ -5,7 +5,9 @@ defineOptions({ name: 'PlButton' });
 
 const props = withDefaults(
   defineProps<{
+    /** 按钮视觉类型 */
     type?: 'primary' | 'default';
+    /** 是否禁用按钮 */
     disabled?: boolean;
   }>(),
   {
@@ -15,7 +17,13 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
+  /** 点击未禁用的按钮时触发 */
   click: [event: MouseEvent];
+}>();
+
+defineSlots<{
+  /** 按钮内容 */
+  default?: () => unknown;
 }>();
 
 const ns = createNamespace('button');

@@ -26,6 +26,11 @@ import { createNamespace } from '@internal/utils';
 
 defineOptions({ name: '${prefix}${pascal(name)}' });
 
+defineSlots<{
+  /** 请在此说明默认插槽 */
+  default?: () => unknown;
+}>();
+
 const ns = createNamespace('${block}');
 </script>
 
