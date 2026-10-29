@@ -87,6 +87,9 @@ catalogs:
     vue:
       specifier: ^3.5.44
       version: 3.5.44
+    vue-component-meta:
+      specifier: ^3.3.13
+      version: 3.3.13
     vue-eslint-parser:
       specifier: ^10.4.1
       version: 10.4.1
@@ -223,6 +226,9 @@ importers:
       unplugin-vue:
         specifier: 'catalog:'
         version: 7.2.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(rolldown@1.2.13)(rollup@4.64.6)(tsx@4.23.15)(vue@3.5.44(typescript@5.9.3))(yaml@2.9.1)
+      vue-component-meta:
+        specifier: 'catalog:'
+        version: 3.3.13(typescript@5.9.3)
 
   internal/tsconfig: {}
 
@@ -6155,6 +6161,17 @@ packages:
         integrity: sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==,
       }
 
+  vue-component-meta@3.3.13:
+    resolution:
+      {
+        integrity: sha512-VnqcGTxB4n56qWfsuroOL+cEvjkV8uEffGy57bqlzePAQKQMLBXAjIKIntyngunmMnxWHMLzkYgRxdx9I1H/hg==,
+      }
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vue-component-type-helpers@3.3.13:
     resolution:
       {
@@ -9843,6 +9860,14 @@ snapshots:
   vscode-languageserver-textdocument@1.0.15: {}
 
   vscode-uri@3.2.0: {}
+
+  vue-component-meta@3.3.13(typescript@5.9.3):
+    dependencies:
+      '@volar/typescript': 2.4.28
+      '@vue/language-core': 3.3.13
+      path-browserify: 1.0.1
+    optionalDependencies:
+      typescript: 5.9.3
 
   vue-component-type-helpers@3.3.13: {}
 
