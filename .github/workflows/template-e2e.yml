@@ -80,6 +80,9 @@ jobs:
           test -f packages/core/es/foo/index.mjs
           test -f packages/core/dist/tokens.css
           grep -q -- '--ac-color-primary' packages/core/dist/tokens.css
+          grep -q '"AcFoo"' packages/core/dist/web-types.json
+          grep -q '"ac-button"' packages/core/dist/tags.json
+          grep -q '"web-types": "dist/web-types.json"' packages/core/package.json
           if [[ "$PREPROCESSOR" == scss ]]; then
             grep -q '<style lang="scss">' packages/components/foo/foo.vue
             grep -q '<style lang="scss">' packages/components/button/button.vue
