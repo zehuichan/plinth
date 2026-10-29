@@ -8,6 +8,8 @@ export interface LibConfig {
   preprocessor: 'none' | 'scss' | 'less';
   formats: Array<'es' | 'cjs'>;
   styles: 'inject' | 'sideEffects';
+  /** Docs site root, used for `doc-url` in IDE metadata. Omit to leave links out. */
+  docsUrl?: string;
 }
 
 export function defineLibConfig(config: LibConfig): LibConfig {

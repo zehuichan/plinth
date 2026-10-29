@@ -14,6 +14,11 @@
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
+  "web-types": "dist/web-types.json",
+  "vetur": {
+    "tags": "dist/tags.json",
+    "attributes": "dist/attributes.json"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",

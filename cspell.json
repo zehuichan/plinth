@@ -27,6 +27,7 @@
     "tsdown",
     "turborepo",
     "typecheck",
+    "vetur",
     "vitepress",
     "vitest",
     "vnode",

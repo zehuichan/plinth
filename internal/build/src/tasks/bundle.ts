@@ -6,6 +6,7 @@ import Vue from 'unplugin-vue/rolldown';
 import { defineLibConfig, type LibConfig } from '../config.ts';
 import { ES_ENTRIES } from '../generated-entries.ts';
 import { CORE_DIR, REPO_ROOT } from '../paths.ts';
+import { emitWebTypes } from '../web-types/index.ts';
 
 async function loadConfig(): Promise<LibConfig> {
   const url = pathToFileURL(join(REPO_ROOT, 'lib.config.ts')).href;
@@ -76,6 +77,7 @@ export async function bundle(): Promise<void> {
   copyFileSync(join(CORE_DIR, 'styles/tokens.css'), join(CORE_DIR, 'dist/tokens.css'));
   const styleCss = join(CORE_DIR, 'dist/style.css');
   if (!existsSync(styleCss)) writeFileSync(styleCss, '/* @plinth/ui */\n');
+  emitWebTypes(lib);
 
   await build(dist);
 }
