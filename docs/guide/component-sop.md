@@ -49,6 +49,7 @@ docs/components/date-picker/
 组件至少要具备：
 
 - 稳定、明确的 props 和 emits 类型
+- props、emits 和 `defineSlots` 每个成员都有 JSDoc 说明
 - 符合组件前缀的 `defineOptions({ name })`
 - 原生语义和键盘可访问性
 - 通过设计令牌表达的颜色、边框和间距，不在业务组件里硬编码品牌值
@@ -61,7 +62,33 @@ export { default } from './date-picker.vue';
 export { default as PlDatePicker } from './date-picker.vue';
 ```
 
-## 3.1 类名与样式约定
+## 3.1 IDE 提示从 JSDoc 来
+
+`pnpm build` 会用 `vue-component-meta` 读取组件的类型和 JSDoc，生成随包发布的 `dist/web-types.json`（JetBrains）和 `dist/tags.json` / `dist/attributes.json`（Vetur）。类型、默认值、字符串字面量可选值会自动提取，说明文字只能来自 JSDoc，没写注释的成员在 IDE 里就只有类型：
+
+```ts
+const props = withDefaults(
+  defineProps<{
+    /** 尺寸 */
+    size?: 'small' | 'large';
+  }>(),
+  { size: 'small' },
+);
+
+const emit = defineEmits<{
+  /** 选中日期变化时触发 */
+  change: [value: string];
+}>();
+
+defineSlots<{
+  /** 面板底部的额外内容 */
+  footer?: () => unknown;
+}>();
+```
+
+`lib.config.ts` 设置 `docsUrl` 后，提示里还会带上指向 `<docsUrl>/components/<seg>/` 的文档链接。
+
+## 3.2 类名与样式约定
 
 模板里的类名全部由 `createNamespace` 派生，库前缀只在 `lib.config.ts` 中配置一次，完整约定见[样式规范](/guide/styling)：
 

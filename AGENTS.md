@@ -10,7 +10,7 @@ Add a component with `pnpm gen component`. Do not hand-edit generated files (`//
 
 ## Coding style
 
-TypeScript and Vue 3 SFCs. Component directories use kebab-case. First-party UI components are prefixed like `PlButton`. Prefer `unknown` over casual `any`. Do not hand-edit `dist/` or `es/`.
+TypeScript and Vue 3 SFCs. Component directories use kebab-case. First-party UI components are prefixed like `PlButton`. Document every prop, emit, and `defineSlots` member with JSDoc; `pnpm build` extracts it into the published web-types / Vetur IDE metadata. Prefer `unknown` over casual `any`. Do not hand-edit `dist/` or `es/`.
 
 Library SFCs use plain `<style>`, never `scoped` — including wrappers around third-party components. Isolation comes from the `pl-` class prefix, enforced by `vue/enforce-style-attribute` on `packages/**/*.vue`. Docs demos and playground code may still use `scoped`. The foundation does not ship Less or SCSS. The library author picks `none` | `scss` | `less` at `pnpm bootstrap`; `pnpm gen component` reads `preprocessor` from `lib.config.ts`. Published CSS stays CSS.
 

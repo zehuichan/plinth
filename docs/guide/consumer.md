@@ -99,7 +99,7 @@ import { PlButton } from '@plinth/ui/es/button';
 
 该入口会携带 Button 自身的样式，同样需要在入口引入一次 `@plinth/ui/tokens.css`。
 
-## TypeScript
+## TypeScript 与 IDE 提示
 
 组件公开类型随包一起发布，无需安装额外的 `@types/*`。具名导入、resolver 和分包入口都能直接获得类型提示。
 
@@ -112,6 +112,16 @@ import { PlButton } from '@plinth/ui/es/button';
   }
 }
 ```
+
+包里还带了模板标签提示数据，组件名、属性、可选值、事件和插槽说明都来自组件源码的类型与注释：
+
+| 编辑器                        | 数据来源                                                     | 需要配置       |
+| ----------------------------- | ------------------------------------------------------------ | -------------- |
+| WebStorm 等 JetBrains IDE     | `package.json` 的 `web-types`                                | 无，安装即生效 |
+| VS Code + Vue - Official      | 上面的 `@plinth/ui/global` 类型声明                          | 按上文配置     |
+| VS Code + Vetur（已停止维护） | `package.json` 的 `vetur`（`tags.json` / `attributes.json`） | 无，安装即生效 |
+
+WebStorm 没有出现提示时，确认依赖已经安装在 `node_modules` 中，再执行一次 File → Invalidate Caches。
 
 ## 常见问题
 
