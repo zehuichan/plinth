@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "pnpm build:ai && vitepress build",
+    "build:ai": "tsx build/generate-ai.ts",
     "check:coverage": "tsx build/check-docs-coverage.ts"
   },
   "devDependencies": {
@@ -13,7 +14,6 @@
     "@plinth/ui": "workspace:*",
     "vitepress": "catalog:",
     "vitepress-demo-plugin": "catalog:",
-    "vitepress-plugin-llms": "catalog:",
     "vue": "catalog:"
   }
 }

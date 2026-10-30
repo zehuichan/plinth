@@ -12,6 +12,7 @@
     "dev:docs": "pnpm --filter @plinth/docs dev",
     "build": "turbo run build --filter=@plinth/ui",
     "build:site": "pnpm --filter @plinth/docs build && pnpm --filter @plinth/playground build",
+    "build:ai": "pnpm --filter @plinth/docs build:ai",
     "typecheck": "pnpm typecheck:web && pnpm typecheck:node",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json",

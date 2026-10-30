@@ -1,18 +1,22 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitepress';
 import { vitepressDemoPlugin } from 'vitepress-demo-plugin';
-import llmstxt from 'vitepress-plugin-llms';
 import { deriveSidebar } from './config/sidebar';
 
 const docsRoot = fileURLToPath(new URL('..', import.meta.url));
 const pkgRoot = fileURLToPath(new URL('../../packages/core/index.ts', import.meta.url));
 
 export default defineConfig({
+  // GitHub Pages project sites live under `/<repo>/`; the deploy workflow sets DOCS_BASE.
+  // Local dev and plain `build` keep serving from the root.
+  base: process.env.DOCS_BASE || '/',
   title: '@plinth/ui',
   lang: 'zh-CN',
   description: 'Vue 3 组件库',
+  // `docs/public` also receives the generated llms markdown pages; they are static assets, not
+  // site pages, so keep VitePress from compiling them as routes.
+  srcExclude: ['public/**'],
   vite: {
-    plugins: [llmstxt()],
     resolve: {
       alias: {
         '@plinth/ui': pkgRoot,

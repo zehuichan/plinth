@@ -6,7 +6,10 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "$TURBO_ROOT$/lib.config.ts",
-        "$TURBO_ROOT$/typings/global.d.ts"
+        "$TURBO_ROOT$/typings/global.d.ts",
+        "$TURBO_ROOT$/docs/guide/**",
+        "$TURBO_ROOT$/docs/components/**",
+        "$TURBO_ROOT$/docs/hooks/**"
       ],
       "outputs": ["dist/**", "es/**"]
     },
