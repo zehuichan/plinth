@@ -1,0 +1,58 @@
+name: docs
+
+# Publishes the VitePress site to GitHub Pages.
+# One-time setup: repo Settings → Pages → Build and deployment → Source: "GitHub Actions".
+on:
+  push:
+    branches: [main]
+    paths:
+      - docs/**
+      - packages/**
+      - internal/**
+      - lib.config.ts
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - .github/workflows/docs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let an in-flight deployment finish instead of cancelling it half way.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # https://<owner>.github.io/<repo>/ — links in llms.txt need the full URL, assets need the base.
+  DOCS_BASE: /${{ github.event.repository.name }}/
+  LLM_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/configure-pages@v5
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @plinth/docs build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -76,7 +76,7 @@ UI 选项对应的 npm 包：
 
 1. 批量替换模板占位符：包名、组件前缀、`pl-` 类名、`--pl-` 变量、installer / Resolver 名。
 2. 重写 `lib.config.ts`、`packages/utils/src/css-prefix.ts`、`.npmrc`、`packages/core/package.json`、`AGENTS.md`；按 UI 选择写入 `peerDependencies`、catalog，以及文档站和 playground 的 `installUi`。若选了预处理器，写入编译链依赖，并把已有库组件的 `<style>` 补上对应 `lang`。
-3. 删掉模板自测工作流 `.github/workflows/template-e2e.yml`；按 CI 选择只保留 GitHub 或 GitLab 配置；若 `--no-playground` 则删除 `playground/`。
+3. 删掉模板自测工作流 `.github/workflows/template-e2e.yml` 和 plinth 自己的文档站部署 `.github/workflows/docs.yml`；按 CI 选择只保留 GitHub 或 GitLab 配置；若 `--no-playground` 则删除 `playground/`。
 4. 裁掉本 README 里「底座教程」这一段，只留下下面给使用方看的库说明。
 5. 扫描全仓（跳过 `scripts/bootstrap/`），确认没有 `@plinth/ui`、`PlinthResolver`、`PlButton`、`--pl-`、`Plinth` 残留。
 6. 删掉 `scripts/bootstrap/` 和根目录 `package.json` 里的 `bootstrap` 脚本——**只能跑一次，跑完就自我删除**。
