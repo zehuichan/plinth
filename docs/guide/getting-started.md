@@ -89,5 +89,6 @@ pnpm verify
 - 要新增或删除组件：阅读[新增组件](/guide/component-sop)
 - 要写类名、主题变量或接 SCSS / Less：阅读[样式规范](/guide/styling)
 - 要封装 Ant Design Vue / Antdv Next / Element Plus / TDesign：阅读[UI 框架](/guide/ui-framework)
+- 要让 AI 助手按真实接口使用组件库：阅读[给 AI 助手](/guide/ai/for-agents)
 - 要准备版本：阅读[发布](/guide/release)
 - 要把 hooks 拆成独立公开包：阅读[拆分组合式函数](/guide/split-hooks)

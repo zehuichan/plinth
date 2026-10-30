@@ -63,6 +63,15 @@ export function deriveSidebar(docsRoot: string): DefaultTheme.Sidebar {
         ],
       },
       {
+        text: 'AI',
+        items: [
+          { text: '给 AI 助手', link: '/guide/ai/for-agents' },
+          { text: 'Design.md', link: '/guide/ai/design-md' },
+          { text: 'LLMs.txt', link: '/guide/ai/llms' },
+          { text: 'Skills', link: '/guide/ai/skills' },
+        ],
+      },
+      {
         text: '样式与选型',
         items: [
           { text: '样式规范', link: '/guide/styling' },
