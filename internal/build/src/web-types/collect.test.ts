@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   collectComponentDocs,
+  deprecation,
+  emitDeprecations,
   emitDescriptions,
   eventArguments,
   hyphenate,
@@ -43,6 +45,37 @@ defineEmits<{
 }>();
 </script>`;
     expect(emitDescriptions(sfc)).toEqual(new Map([['change', 'fires on change']]));
+  });
+
+  it('reads @deprecated from JSDoc tags', () => {
+    expect(deprecation([{ name: 'since', text: '1.0' }])).toBeUndefined();
+    expect(deprecation([{ name: 'deprecated' }])).toBe('');
+    expect(deprecation([{ name: 'deprecated', text: ' use `size` instead ' }])).toBe(
+      'use `size` instead',
+    );
+  });
+
+  it('reads @deprecated from tuple-style defineEmits', () => {
+    const sfc = `<script setup lang="ts">
+defineEmits<{
+  /** fires on change */
+  change: [value: string];
+  /**
+   * old event
+   * @deprecated use change instead
+   */
+  update: [value: string];
+  /** @deprecated */
+  close: [];
+}>();
+</script>`;
+    expect(emitDeprecations(sfc)).toEqual(
+      new Map([
+        ['update', 'use change instead'],
+        ['close', ''],
+      ]),
+    );
+    expect(emitDescriptions(sfc).get('update')).toBe('old event');
   });
 });
 

@@ -72,6 +72,72 @@ describe('renderWebTypes', () => {
   });
 });
 
+describe('deprecated members', () => {
+  const deprecatedDocs: ComponentDoc[] = [
+    {
+      ...docs[0]!,
+      props: [
+        {
+          name: 'size',
+          description: 'Size',
+          type: 'string',
+          required: false,
+          deprecated: 'use `scale`',
+        },
+        { name: 'flat', description: '', type: 'boolean', required: false, deprecated: '' },
+      ],
+      events: [
+        { name: 'update', description: 'Old event', arguments: [], deprecated: 'use change' },
+      ],
+      slots: [{ name: 'footer', description: '', deprecated: '' }],
+    },
+  ];
+
+  it('flags them in web-types and keeps the note in the description', () => {
+    const out = renderWebTypes(deprecatedDocs, pkg) as {
+      contributions: { html: { 'vue-components': Array<Record<string, unknown>> } };
+    };
+    const [component] = out.contributions.html['vue-components'];
+    expect(component!.props).toEqual([
+      {
+        name: 'size',
+        description: '**已废弃**：use `scale`\n\nSize',
+        type: 'string',
+        deprecated: true,
+      },
+      { name: 'flat', description: '**已废弃**', type: 'boolean', deprecated: true },
+    ]);
+    expect(component!.js).toEqual({
+      events: [
+        {
+          name: 'update',
+          description: '**已废弃**：use change\n\nOld event',
+          arguments: [],
+          deprecated: true,
+        },
+      ],
+    });
+    expect(component!.slots).toEqual([
+      { name: 'footer', description: '**已废弃**', deprecated: true },
+    ]);
+  });
+
+  it('puts the note in front of the Vetur description', () => {
+    const { attributes } = renderVetur(deprecatedDocs, pkg);
+    expect(attributes['pl-date-picker/size']!.description).toBe('**已废弃**：use `scale`\n\nSize');
+    expect(attributes['pl-date-picker/flat']!.description).toBe('**已废弃**');
+    expect(attributes['pl-date-picker/update']).toEqual({
+      type: 'event',
+      description: '**已废弃**：use change\n\nOld event',
+    });
+  });
+
+  it('leaves regular members untouched', () => {
+    const { attributes } = renderVetur(docs, pkg);
+    expect(attributes['pl-date-picker/size']!.description).toBe('Size\n\n默认值：`"small"`');
+  });
+});
+
 describe('renderVetur', () => {
   it('emits kebab-case tags and attributes', () => {
     const { tags, attributes } = renderVetur(docs, pkg);

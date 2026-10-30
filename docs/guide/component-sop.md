@@ -86,6 +86,18 @@ defineSlots<{
 }>();
 ```
 
+要废弃某个 prop、事件或插槽时，在它的 JSDoc 里加 `@deprecated`，并写明替代方案。JetBrains IDE 会给它加删除线，Vetur 的提示里则以「已废弃」开头；事件的 `@deprecated` 同样写在 `defineEmits` 的成员注释上：
+
+```ts
+defineProps<{
+  /**
+   * 旧的尺寸写法
+   * @deprecated 改用 `size`
+   */
+  scale?: 'small' | 'large';
+}>();
+```
+
 `lib.config.ts` 设置 `docsUrl` 后，提示里还会带上指向 `<docsUrl>/components/<seg>/` 的文档链接。
 
 ## 3.2 类名与样式约定

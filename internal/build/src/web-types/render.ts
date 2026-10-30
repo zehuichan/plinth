@@ -18,6 +18,22 @@ function docUrl(pkg: PackageInfo, doc: ComponentDoc): string | undefined {
   return `${pkg.docsUrl.replace(/\/+$/, '')}/components/${doc.seg}/`;
 }
 
+/** Markdown line announcing a `@deprecated` member, with the JSDoc note when there is one. */
+function deprecationLine(item: { deprecated?: string }): string | undefined {
+  if (item.deprecated === undefined) return undefined;
+  return item.deprecated ? `**已废弃**：${item.deprecated}` : '**已废弃**';
+}
+
+/** The member's description with its deprecation note in front. */
+function describe(item: { description: string; deprecated?: string }): string {
+  return [deprecationLine(item), item.description].filter(Boolean).join('\n\n');
+}
+
+/** web-types flag for a deprecated member, so JetBrains IDEs strike it through. */
+function deprecatedFlag(item: { deprecated?: string }): { deprecated?: true } {
+  return item.deprecated === undefined ? {} : { deprecated: true };
+}
+
 export function renderWebTypes(docs: ComponentDoc[], pkg: PackageInfo): object {
   return {
     $schema: WEB_TYPES_SCHEMA,
@@ -35,21 +51,24 @@ export function renderWebTypes(docs: ComponentDoc[], pkg: PackageInfo): object {
           ...optional('doc-url', docUrl(pkg, doc)),
           props: doc.props.map((p) => ({
             name: p.name,
-            ...optional('description', p.description),
+            ...optional('description', describe(p)),
             type: p.type,
             ...optional('default', p.default),
             ...(p.required && { required: true }),
+            ...deprecatedFlag(p),
           })),
           js: {
             events: doc.events.map((e) => ({
               name: e.name,
-              ...optional('description', e.description),
+              ...optional('description', describe(e)),
               arguments: e.arguments,
+              ...deprecatedFlag(e),
             })),
           },
           slots: doc.slots.map((s) => ({
             name: s.name,
-            ...optional('description', s.description),
+            ...optional('description', describe(s)),
+            ...deprecatedFlag(s),
           })),
         })),
       },
@@ -73,7 +92,11 @@ export function renderVetur(docs: ComponentDoc[], pkg: PackageInfo): VeturData {
       attributes: [...doc.props, ...doc.events].map((item) => hyphenate(item.name)),
     };
     for (const p of doc.props) {
-      const lines = [p.description, p.default !== undefined && `默认值：\`${p.default}\``];
+      const lines = [
+        deprecationLine(p),
+        p.description,
+        p.default !== undefined && `默认值：\`${p.default}\``,
+      ];
       attributes[`${doc.tag}/${hyphenate(p.name)}`] = {
         type: p.type,
         ...optional('description', lines.filter(Boolean).join('\n\n')),
@@ -83,7 +106,7 @@ export function renderVetur(docs: ComponentDoc[], pkg: PackageInfo): VeturData {
     for (const e of doc.events) {
       attributes[`${doc.tag}/${hyphenate(e.name)}`] = {
         type: 'event',
-        ...optional('description', e.description),
+        ...optional('description', describe(e)),
       };
     }
   }
